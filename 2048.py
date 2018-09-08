@@ -1,8 +1,9 @@
 #! python3
 # 2048.py - plays a game of 2048
-# needs hella work
+# Last edited 6/13/2017
+# This was my first project in Python. I learned a lot, and I see now how much of it could be done better
 
-#NOTE - the game determines coordinates in (column, row) format!!!!
+#NOTE - the game determines coordinates in (column, row) format
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -16,7 +17,7 @@ import numpy
 tileValues = ['2', '4', '8', '16', '32', '64', '128', '256', '512', '1024', '2048']
 buffer = .2
 
-#functions *******************************************************************************
+# Functions 
 def readBoard():
 	board = numpy.zeros((4,4))
 	board[0][0] = findSlot('1-1')
@@ -56,6 +57,7 @@ def beginGame():
 	previousBoard = numpy.zeros((4,4))
 	time.sleep(3)
 	try:
+		#this needs to be replaced by an algorithm
 		time.sleep(buffer)
 		main_page.send_keys(Keys.DOWN)
 		time.sleep(buffer)
@@ -70,8 +72,8 @@ def beginGame():
 		print('off to a bad start - intro sequence threw exception')
 	return
 
-#bottom row is assumed to be board[x][3]
-#I DONT THINK THESE WORK
+# bottom row is assumed to be board[x][3]
+# These were written to start solving the game, but never got implemented
 def checkBottomRowMerge(board):
 	"This function returns true if there is any valid merge from shifting the bottom row left"
 	if (board[0][3] == board[1][3] or board[1][3] == board[2][3] or board[2][3] == board[3][3]):
@@ -92,8 +94,7 @@ def checkIfMoveDidNothing(current, previous):
 	"This might be completely wrong"
 	return ((current == previous).all())
 
-
-# end of functions **********************************************************************
+# end of functions 
 
 
 
@@ -103,7 +104,6 @@ browser.get('https://gabrielecirulli.github.io/2048/')
 main_page = browser.find_element_by_tag_name('html')
 game_over = browser.find_element_by_class_name("retry-button")
 # browser.find_element_by_class_name("game-container")
-
 
 c = 0
 emptyMoveCount = 0
@@ -132,7 +132,7 @@ while (not game_over.is_displayed()):
 			main_page.send_keys(Keys.RIGHT)
 		
 	except Exception as e:
-		print("something fucked up after this many times: ", c)
+		print("something failed at run: ", c)
 		time.sleep(.5)
 		browser.refresh()
 		browser.execute_script("window.scrollTo(0, 10);")
@@ -153,15 +153,9 @@ print ("done! final score was : ", finalScore) #eventually display score to comm
 		
 
 		
-# NOTES
 # game is located at <div class="game-container">
 
-# right now, all of this is crap
 	# WebDriverWait(browser, 30).until(EC.presence_of_element_located(browser.find_element_by_tag_name('html')))
 	# def getBoard(BeautifulSoup board): THIS IS INCORRECT SYNTAX
 	#page = requests.get(browser.current_url)
 	#<div class="tile-inner">4</div>
-
-	
-# THE LINE BELOW SUCCESSFULLY MADE A TILE OBJECT WHEN TILE 1-1 HAD THE VALUE OF 4***************************************
-# tile1-1 = browser.find_element_by_css_selector('div.tile.tile-4.tile-position-1-1')
